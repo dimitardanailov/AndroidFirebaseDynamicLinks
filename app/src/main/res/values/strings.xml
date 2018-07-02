@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Firebase Dynamic Links</string>
+    <string name="share">Share</string>
 </resources>
