@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
             .setLongLink(Uri.parse(dynamicLinkUri.toString()))
-            .buildShortDynamicLink()
+            .buildShortDynamicLink(ShortDynamicLink.Suffix.SHORT)
             .addOnCompleteListener(this, new OnCompleteListener<ShortDynamicLink>() {
                 @Override
                 public void onComplete(@NonNull Task<ShortDynamicLink> task) {
@@ -76,8 +76,7 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         // Error
                         // ...
-
-                        mShortUrl.setText("ShortDynamicLinkError");
+                        mShortUrl.setText("ShortDynamicLinkError ...." + task.getException());
                     }
                 }
             });
@@ -96,11 +95,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private static DynamicLink createDynamicLink() {
-        Uri mySocialImage = Uri.parse("https://15togo.com/tokensale/assets/images/logo.svg");
+        Uri mySocialImage = Uri.parse("https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Facebook_New_Logo_%282015%29.svg/2000px-Facebook_New_Logo_%282015%29.svg.png");
 
         DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
                 .setLink(Uri.parse("https://15togo.com/tokensale/"))
-                .setDynamicLinkDomain("15togo.page.link")
+                .setDynamicLinkDomain("codelab.page.link")
                 .setAndroidParameters(
                         new DynamicLink.AndroidParameters.Builder("firebase.dynamic.links")
                                 .setMinimumVersion(125)
