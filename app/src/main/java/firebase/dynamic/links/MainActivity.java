@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView mGreetings, mShortUrl, mFlowchart;
     Button mShare;
+    String mShortLink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,15 +44,12 @@ public class MainActivity extends AppCompatActivity {
         mGreetings.setText(dynamicLinkUri.toString());
 
         mShare = (Button) findViewById(R.id.share);
-        final Context context = this;
         mShare.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                MainActivity.loadShareIntent(context, dynamicLink);
+                displayShortUrl();
             }
         });
-
-        this.displayShortUrl();
     }
 
     private void displayShortUrl() {
@@ -60,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
         final DynamicLink dynamicLink = MainActivity.createDynamicLink();
         Uri dynamicLinkUri = dynamicLink.getUri();
+
+        final Context context = getApplicationContext();
 
         Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
             .setLongLink(Uri.parse(dynamicLinkUri.toString()))
@@ -75,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
                         mShortUrl.setText(shortLink.toString());
                         mFlowchart.setText(flowchartLink.toString());
 
+                        MainActivity.loadShareIntent(context, shortLink.toString());
+
                     } else {
                         // Error
                         // ...
@@ -84,12 +86,10 @@ public class MainActivity extends AppCompatActivity {
             });
     }
 
-    private static void loadShareIntent(Context context, DynamicLink dynamicLink) {
+    private static void loadShareIntent(Context context, String dynamicLink) {
         Intent sendIntent = new Intent();
 
-        Uri dynamicLinkUri = dynamicLink.getUri();
-
-        String msg = "Hey, check this out: " + dynamicLinkUri.toString();
+        String msg = "Hey, check this out: " + dynamicLink;
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, msg);
         sendIntent.setType("text/plain");
