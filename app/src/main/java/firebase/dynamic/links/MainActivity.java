@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    TextView mGreetings, mShortUrl;
+    TextView mGreetings, mShortUrl, mFlowchart;
     Button mShare;
 
     @Override
@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void displayShortUrl() {
         mShortUrl = (TextView) findViewById(R.id.short_url);
+        mFlowchart = (TextView) findViewById(R.id.flowchart);
 
         final DynamicLink dynamicLink = MainActivity.createDynamicLink();
         Uri dynamicLinkUri = dynamicLink.getUri();
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                         Uri flowchartLink = task.getResult().getPreviewLink();
 
                         mShortUrl.setText(shortLink.toString());
+                        mFlowchart.setText(flowchartLink.toString());
 
                     } else {
                         // Error
