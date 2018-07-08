@@ -6,11 +6,9 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -19,7 +17,7 @@ import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
 
-import java.net.URI;
+import firebase.dynamic.links.helpers.AppDynamicsLinks;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
 
         // Generate Dynamic link
-        final DynamicLink dynamicLink = MainActivity.createDynamicLink();
+        final DynamicLink dynamicLink = AppDynamicsLinks.createDynamicLink();
         Uri dynamicLinkUri = dynamicLink.getUri();
 
         mGreetings = (TextView) findViewById(R.id.greetings);
@@ -56,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         mShortUrl = (TextView) findViewById(R.id.short_url);
         mFlowchart = (TextView) findViewById(R.id.flowchart);
 
-        final DynamicLink dynamicLink = MainActivity.createDynamicLink();
+        final DynamicLink dynamicLink = AppDynamicsLinks.createDynamicLink();
         Uri dynamicLinkUri = dynamicLink.getUri();
 
         final Context context = getApplicationContext();
@@ -96,40 +94,5 @@ public class MainActivity extends AppCompatActivity {
         context.startActivity(sendIntent);
     }
 
-    private static DynamicLink createDynamicLink() {
-        Uri mySocialImage = Uri.parse("https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Facebook_New_Logo_%282015%29.svg/2000px-Facebook_New_Logo_%282015%29.svg.png");
 
-        DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                .setLink(Uri.parse("https://15togo.com/tokensale/"))
-                .setDynamicLinkDomain("codelab.page.link")
-                .setAndroidParameters(
-                        new DynamicLink.AndroidParameters.Builder("firebase.dynamic.links")
-                                .setMinimumVersion(125)
-                                .build())
-                .setIosParameters(
-                        new DynamicLink.IosParameters.Builder("com.example.ios")
-                                .setAppStoreId("123456789")
-                                .setMinimumVersion("1.0.1")
-                                .build())
-                .setGoogleAnalyticsParameters(
-                        new DynamicLink.GoogleAnalyticsParameters.Builder()
-                                .setSource("orkut")
-                                .setMedium("social")
-                                .setCampaign("example-promo")
-                                .build())
-                .setItunesConnectAnalyticsParameters(
-                        new DynamicLink.ItunesConnectAnalyticsParameters.Builder()
-                                .setProviderToken("123456")
-                                .setCampaignToken("example-promo")
-                                .build())
-                .setSocialMetaTagParameters(
-                        new DynamicLink.SocialMetaTagParameters.Builder()
-                                .setTitle("We're 15ToGo")
-                                .setImageUrl(mySocialImage)
-                                .setDescription("This link works whether the app is installed or not!")
-                                .build())
-                .buildDynamicLink();
-
-        return dynamicLink;
-    }
 }
